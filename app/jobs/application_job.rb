@@ -15,7 +15,7 @@ class ApplicationJob < ActiveJob::Base
     thirty_days = 30 * 24 * 60 * 60
     limit_day = (Time.new.to_i - thirty_days) * 1000
 
-    Feature.where('time < ?', limit_day).destroy_all
+    Feature.where('time < ?', limit_day.to_s).destroy_all
   end
 
   def filter_features(data)
@@ -31,7 +31,7 @@ class ApplicationJob < ActiveJob::Base
   end
 
   def save_feature(feature)
-    return if Feature.exists?(id_api: feature[:id])
+    return if Feature.exists?(id_feature: feature[:id])
 
     Feature.create(
       id_feature: feature[:id],
