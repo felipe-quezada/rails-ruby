@@ -1,51 +1,56 @@
 class FeaturesController < ApplicationController
-  before_action :set_feature, only: %i[ show update destroy ]
-
-  # GET /features
   def index
-    @features = Feature.all
+    page = params[:page].to_i || 1
+    per_page = params[:per_page].to_i || 1000
+    mag_type = params[:mag_type] || nil
 
-    render json: @features
-  end
-
-  # GET /features/1
-  def show
-    render json: @feature
-  end
-
-  # POST /features
-  def create
-    @feature = Feature.new(feature_params)
-
-    if @feature.save
-      render json: @feature, status: :created, location: @feature
+    if per_page > 1000
+      render json: { error: 'El parámetro per_page debe ser menor o igual a 1000' }, status: :unprocessable_entity
     else
-      render json: @feature.errors, status: :unprocessable_entity
+      @data = FeatureApiService.new.last_month
+      ApplicationJob.perform_later
+
+      data = Feature.where({ mag_type: }.compact).order(time: :desc).limit(per_page).offset((page - 1) * per_page)
+      total_count = Feature.where({ mag_type: }.compact).count
+
+      total = (total_count / per_page).ceil
+
+      @response = {
+        data: filter_data(data),
+        pagination: {
+          current_page: page,
+          total:,
+          per_page:
+        }
+      }
+      render json: @response
     end
   end
 
-  # PATCH/PUT /features/1
-  def update
-    if @feature.update(feature_params)
-      render json: @feature
-    else
-      render json: @feature.errors, status: :unprocessable_entity
+  def filter_data(data)
+    features = []
+
+    data.each do |feature|
+      new_data = {
+        id: feature[:id],
+        type: 'feature',
+        attribute: {
+          external_id: feature[:id_api],
+          magnitude: feature[:magnitude],
+          place: feature[:place],
+          time: feature[:time],
+          tsunami: feature[:tsunami],
+          mag_type: feature[:mag_type],
+          title: feature[:title],
+          coordinates: {
+            longitude: feature[:longitude],
+            latitude: feature[:latitude]
+          }
+        },
+        links: { external_url: feature[:url] }
+      }
+      features << new_data
     end
+    features
   end
-
-  # DELETE /features/1
-  def destroy
-    @feature.destroy!
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_feature
-      @feature = Feature.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def feature_params
-      params.require(:feature).permit(:id_feature, :magnitude, :place, :time, :tsunami, :mag_type, :title, :url, :longitude, :latitude)
-    end
 end
