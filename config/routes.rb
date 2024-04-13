@@ -10,6 +10,11 @@ Rails.application.routes.draw do
     get 'features/:id_feature/comments', to: 'comments#index'
     post 'features/:id_feature/comments', to: 'comments#create'
   end
+
+  if ENV["RAILS_SERVE_STATIC_FILES"].present?
+    get "/", to: static("index.html")
+    post "/", to: static("index.html")
+  end
   # Defines the root path route ("/")
   # root "posts#index"
 end
