@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { Earthquakes } from '../interfaces/earthquakes';
 
-axios.defaults.baseURL =
-	import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:3000';
+axios.defaults.baseURL = 'https://earthquake-hm70.onrender.com/';
 
 export const getEarthcuakesPage = async (
 	page: number,
