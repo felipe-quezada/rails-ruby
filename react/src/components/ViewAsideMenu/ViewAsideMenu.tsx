@@ -1,10 +1,13 @@
 import React from 'react';
 import './ViewAsideMenu.css';
 import ReactPaginate from 'react-paginate';
+import { Earthquake } from '../../interfaces/earthquakes';
+import { AccordionFeature } from '..';
 
 type Action<T> = React.Dispatch<React.SetStateAction<T>>;
 
 interface Props {
+	items: Earthquake[];
 	page: number;
 	perPage: number;
 	totalPage: number;
@@ -13,6 +16,7 @@ interface Props {
 }
 
 export const ViewAsideMenu: React.FC<Props> = ({
+	items,
 	page,
 	perPage,
 	totalPage,
@@ -22,9 +26,18 @@ export const ViewAsideMenu: React.FC<Props> = ({
 	return (
 		<main className="aside-menu__container">
 			<h3>Earthquake watcher</h3>
-			<section>
-				<h5>features ask: {perPage}</h5>
-				<p>{page} papa</p>
+			{/* TODO: aun no programadas */}
+			<p style={{ display: 'none' }}>
+				{page}
+				{perPage}
+			</p>
+			<button
+				style={{ display: 'none' }}
+				onClick={() => actionPerPage(2)}
+			></button>
+			{/* ------------------------ */}
+			<section className="aside-menu__display-features">
+				<AccordionFeature items={items} />
 			</section>
 			<ReactPaginate
 				containerClassName="pagination"

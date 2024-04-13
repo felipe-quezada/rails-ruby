@@ -35,7 +35,7 @@ class FeaturesController < ApplicationController
         id: feature[:id],
         type: 'feature',
         attribute: {
-          external_id: feature[:id_api],
+          external_id: feature[:id_feature],
           magnitude: feature[:magnitude],
           place: feature[:place],
           time: feature[:time],

@@ -1,10 +1,9 @@
 .aside-menu__container {
-	width: 450px;
+	width: 475px;
 	height: 95%;
 	left: 20px;
 	top: 50%;
-	padding-block: 20px;
-	padding-inline: 10px;
+	padding: 20px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -12,11 +11,17 @@
 	transform: translate(0, -50%);
 	color: #000000;
 	background-color: #ffffff;
-	border: 1px solid #000000;
+	box-shadow: inset 10px black;
 	border-radius: 15px;
 	text-align: center;
 	position: absolute;
 	z-index: 1000;
+}
+
+.aside-menu__display-features {
+	height: 80%;
+	overflow-y: auto;
+	width: 100%;
 }
 
 .pagination {
