@@ -7,7 +7,7 @@ class FeaturesController < ApplicationController
     if per_page > 1000
       render json: { error: 'El parámetro per_page debe ser menor o igual a 1000' }, status: :unprocessable_entity
     else
-      @data = FeatureApiService.new.last_month
+      # @data = FeatureApiService.new.last_month
       ApplicationJob.perform_later
 
       data = Feature.where({ mag_type: }.compact).order(time: :desc).limit(per_page).offset((page - 1) * per_page)

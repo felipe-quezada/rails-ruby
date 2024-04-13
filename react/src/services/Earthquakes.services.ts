@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Earthquakes } from '../interfaces/earthquakes';
 
-axios.defaults.baseURL = 'https://earthquake-hm70.onrender.com/';
+// 'https://earthquake-hm70.onrender.com/'
+axios.defaults.baseURL = 'http://localhost:3000';
 
 export const getEarthcuakesPage = async (
 	page: number,
