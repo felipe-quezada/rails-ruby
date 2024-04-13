@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { MapView, ViewAsideMenu } from './components';
 import { getEarthcuakesPage } from './services';
-import { Earthquake } from './interfaces/earthquakes';
+import { Earthquake, Earthquakes } from './interfaces/earthquakes';
 
 //? On dev:
-//import data from './assets/json/dataServer.json';
+import data from './assets/json/dataServer.json';
 
 export const App: React.FC = () => {
 	const [marks, setMarks] = useState<Earthquake[]>([]);
@@ -12,21 +12,20 @@ export const App: React.FC = () => {
 	const [perPage, setPerPage] = useState<number>(20);
 	const [numberPages, setNumberPages] = useState<number>(1);
 
-	// const page = 1,
-	// 	perPage = 100;
-
 	useEffect(() => {
 		// ? On product:
-		getEarthcuakesPage(page, perPage).then((features) => {
-			setMarks(features.data);
-			setNumberPages(features.pagination.total);
-		});
-
-		// ? On dev:
-		// const { data: earth, pagination } = data as unknown as Earthquakes;
-		// setMarks(earth);
-		// setNumberPages(pagination.total);
-	}, []);
+		if (import.meta.env.PROD) {
+			getEarthcuakesPage(page, perPage).then((features) => {
+				setMarks(features.data);
+				setNumberPages(features.pagination.total);
+			});
+		} else {
+			// ? On dev:
+			const { data: earth, pagination } = data as unknown as Earthquakes;
+			setMarks(earth);
+			setNumberPages(pagination.total);
+		}
+	}, [page, perPage]);
 
 	return (
 		<>
