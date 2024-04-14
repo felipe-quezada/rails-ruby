@@ -6,4 +6,4 @@ set -o errexit
 
 bundle install
 # to create tables
-# bundle exec rails db:migrate
+bundle exec rails db:migrate
