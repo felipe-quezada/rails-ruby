@@ -9,10 +9,12 @@ import {
 	type Earthquakes,
 } from './interfaces';
 import './App.css';
+import 'react-toastify/ReactToastify.css';
 
 //? On dev:
 import data from './assets/json/dataServer.json';
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
+import { ToastContainer } from 'react-toastify';
 
 export const App: React.FC = () => {
 	const [marks, setMarks] = useState<Earthquake[]>([]);
@@ -25,6 +27,7 @@ export const App: React.FC = () => {
 	const [numberPages, setNumberPages] = useState<number>(1);
 	const [showComments, setShowComment] = useState<boolean>(false);
 	const [showAside, setShowAside] = useState<boolean>(true);
+	const [loadPage, setLoadPage] = useState<boolean>(true);
 
 	const handleActionAside: ActionAsideFn = (controller, payload) => {
 		switch (controller) {
@@ -54,10 +57,12 @@ export const App: React.FC = () => {
 	useEffect(() => {
 		// ? On product:
 		if (import.meta.env.PROD) {
-			getEarthcuakesPage(page, perPage, magType).then((features) => {
-				setMarks(features.data);
-				setNumberPages(features.pagination.total);
-			});
+			getEarthcuakesPage(page, perPage, magType)
+				.then((features) => {
+					setMarks(features.data);
+					setNumberPages(features.pagination.total);
+				})
+				.finally(() => setLoadPage(false));
 		} else {
 			// ? On dev:
 			const { data: earth, pagination } = data as unknown as Earthquakes;
@@ -68,7 +73,7 @@ export const App: React.FC = () => {
 
 	return (
 		<>
-			{marks.length == 0 ? (
+			{loadPage ? (
 				<div className="loading-screen">
 					<h1>Loading</h1>
 				</div>
@@ -96,6 +101,7 @@ export const App: React.FC = () => {
 						action={handleActionAside}
 					/>
 					<MapView marks={marks} />
+					<ToastContainer />
 				</>
 			)}
 		</>

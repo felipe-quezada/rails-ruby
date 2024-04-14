@@ -8,6 +8,7 @@ import {
 } from '../../interfaces';
 import { getComments, postComment } from '../../services';
 import { ArrowLeftIcon, Cross2Icon } from '@radix-ui/react-icons';
+import { Bounce, toast } from 'react-toastify';
 
 interface Props {
 	idComment: number | undefined;
@@ -21,51 +22,8 @@ export const ViewCommentAside: React.FC<Props> = ({
 	action,
 }) => {
 	const [comments, setComments] = useState<Comments>({
-		quantity: 2,
-		comment: [
-			{
-				id: 1,
-				content: 'This is a comment',
-				feature_id: 9991,
-				created_at: '2024-04-14T07:26:07.103Z',
-				updated_at: '2024-04-14T07:26:07.103Z',
-			},
-			{
-				id: 2,
-				content: 'This is another comment',
-				feature_id: 9991,
-				created_at: '2024-04-14T07:26:23.657Z',
-				updated_at: '2024-04-14T07:26:23.657Z',
-			},
-			{
-				id: 2,
-				content: 'This is another comment',
-				feature_id: 9991,
-				created_at: '2024-04-14T07:26:23.657Z',
-				updated_at: '2024-04-14T07:26:23.657Z',
-			},
-			{
-				id: 2,
-				content: 'This is another comment',
-				feature_id: 9991,
-				created_at: '2024-04-14T07:26:23.657Z',
-				updated_at: '2024-04-14T07:26:23.657Z',
-			},
-			{
-				id: 2,
-				content: 'This is another comment',
-				feature_id: 9991,
-				created_at: '2024-04-14T07:26:23.657Z',
-				updated_at: '2024-04-14T07:26:23.657Z',
-			},
-			{
-				id: 2,
-				content: 'This is another comment',
-				feature_id: 9991,
-				created_at: '2024-04-14T07:26:23.657Z',
-				updated_at: '2024-04-14T07:26:23.657Z',
-			},
-		],
+		quantity: 0,
+		comment: [],
 	});
 	const [feature, setFeature] = useState<Feature>({
 		id: 9991,
@@ -84,6 +42,7 @@ export const ViewCommentAside: React.FC<Props> = ({
 	});
 	const [createComment, setCreateComment] = useState<string>('');
 	const [commentSubmited, setCommentSubmited] = useState<0 | 1>(0);
+	const [loadingDelay, setLoadingDelay] = useState<boolean>(false);
 	useEffect(() => {
 		if (idComment !== undefined && import.meta.env.PROD) {
 			getComments(idComment).then(({ comments, feature }) => {
@@ -138,10 +97,29 @@ export const ViewCommentAside: React.FC<Props> = ({
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
-					postComment(idComment!, createComment).then(() => {
-						setCreateComment('');
-						setCommentSubmited(commentSubmited === 0 ? 1 : 0);
-					});
+
+					if (createComment.length === 0) return;
+
+					setLoadingDelay(true);
+					postComment(idComment!, createComment)
+						.then(() => {
+							setCreateComment('');
+							setCommentSubmited(commentSubmited === 0 ? 1 : 0);
+						})
+						.finally(() => {
+							toast.success('Comment saved succesfully', {
+								position: 'bottom-center',
+								autoClose: 5000,
+								hideProgressBar: true,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+								theme: 'light',
+								transition: Bounce,
+							});
+							setLoadingDelay(false);
+						});
 				}}
 				className="comments-form"
 			>
@@ -156,7 +134,7 @@ export const ViewCommentAside: React.FC<Props> = ({
 					value={createComment}
 					onChange={(e) => setCreateComment(e.target.value)}
 				></textarea>
-				<button className="submit-button" type="submit">
+				<button className="submit-button" type="submit" disabled={loadingDelay}>
 					Save
 				</button>
 			</form>

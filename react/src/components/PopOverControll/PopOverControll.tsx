@@ -7,6 +7,7 @@ import {
 	ActionAsideFnPayload,
 	ControllerEnum,
 } from '../../interfaces';
+import { Bounce, toast } from 'react-toastify';
 
 interface Props {
 	action: ActionAsideFn;
@@ -16,6 +17,7 @@ interface Props {
 export const PopOverControll: React.FC<Props> = ({ action, perPage }) => {
 	const [buttonPop, setButtonPop] = useState<string | undefined>(undefined);
 	const [perPageSelect, setPerPageSelect] = useState<number>(perPage);
+	const [changesDelay, setChangesDelay] = useState<boolean>(false);
 	const buttonValue = (value: ActionAsideFnPayload) => value.toUpperCase();
 	const onSelectButton = (
 		e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -29,9 +31,9 @@ export const PopOverControll: React.FC<Props> = ({ action, perPage }) => {
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = +e.target.value;
 
-		if (value > 1000 || value <= 0) return;
+		if (value > 1000 || value < 0) return;
 
-		setPerPageSelect(value);
+		setPerPageSelect(value === 0 ? 1 : value);
 	};
 
 	return (
@@ -142,13 +144,26 @@ export const PopOverControll: React.FC<Props> = ({ action, perPage }) => {
 					<form
 						onSubmit={(e) => {
 							e.preventDefault();
+							setChangesDelay(true);
+							setTimeout(() => setChangesDelay(false), 1500);
 							action(ControllerEnum.MAG_TYPE, buttonPop?.toLowerCase());
 							action(ControllerEnum.PER_PAGE, perPageSelect);
+							toast.info('Applying changes', {
+								position: 'bottom-center',
+								autoClose: 5000,
+								hideProgressBar: true,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+								theme: 'light',
+								transition: Bounce,
+							});
 						}}
 						style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
 					>
 						<div className="popoverClose" aria-label="Close">
-							<button>Apply changes</button>
+							<button disabled={changesDelay}>Apply changes</button>
 						</div>
 					</form>
 					<Popover.Arrow className="PopoverArrow" />
