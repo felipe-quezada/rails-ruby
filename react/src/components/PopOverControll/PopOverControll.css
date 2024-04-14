@@ -1,0 +1,166 @@
+/* reset */
+button,
+fieldset,
+input {
+	all: unset;
+}
+
+.PopoverContent {
+	z-index: 1000;
+	border-radius: 4px;
+	padding: 20px;
+	width: 260px;
+	background-color: white;
+	box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+		hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+	animation-duration: 400ms;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	will-change: transform, opacity;
+}
+.PopoverContent:focus {
+	box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+		hsl(206 22% 7% / 20%) 0px 10px 20px -15px, 0 0 0 2px var(--violet-7);
+}
+.PopoverContent[data-state='open'][data-side='top'] {
+	animation-name: slideDownAndFade;
+}
+.PopoverContent[data-state='open'][data-side='right'] {
+	animation-name: slideLeftAndFade;
+}
+.PopoverContent[data-state='open'][data-side='bottom'] {
+	animation-name: slideUpAndFade;
+}
+.PopoverContent[data-state='open'][data-side='left'] {
+	animation-name: slideRightAndFade;
+}
+
+.PopoverArrow {
+	fill: white;
+}
+
+.popoverClose {
+	font-family: inherit;
+	height: 50px;
+	width: 100%;
+	text-align: center;
+	margin-top: 20px;
+
+	button {
+		background-color: #005ea2;
+		color: #f2f2f2;
+		padding: 5px 10px;
+		border-radius: 10px;
+		cursor: pointer;
+		transition: all 0.1s ease;
+		&:hover {
+			background-color: #0478ca;
+		}
+		&:active {
+			background-color: #033f69;
+		}
+	}
+}
+
+.fieldset {
+	display: flex;
+	gap: 20px;
+	flex-direction: column;
+}
+
+.label {
+	font-size: 13px;
+	width: 75px;
+}
+
+.input {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	border-radius: 4px;
+	border: 1px solid #0478ca;
+	padding: 0 10px;
+}
+
+.title-popover {
+	margin: 0;
+	font-size: 15px;
+	line-height: 19px;
+	font-weight: 600;
+	color: #005ea2;
+}
+.button-container-popover {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+.button-popover {
+	border: 1px solid #005ea2;
+	color: #005ea2;
+	display: flex;
+	width: 20px;
+	gap: 5px;
+	justify-content: center;
+	align-items: center;
+	padding: 5px 10px;
+	border-radius: 10px;
+	transition: all 0.1s ease;
+	font-size: 12px;
+	cursor: pointer;
+
+	&.active {
+		cursor: default !important;
+		color: #f2f2f2 !important;
+		background-color: #005ea2 !important;
+		border: none !important;
+	}
+
+	&:hover {
+		border-color: #033f69;
+		color: #033f69;
+	}
+}
+
+@keyframes slideUpAndFade {
+	from {
+		opacity: 0;
+		transform: translateY(2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideRightAndFade {
+	from {
+		opacity: 0;
+		transform: translateX(-2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideDownAndFade {
+	from {
+		opacity: 0;
+		transform: translateY(-2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideLeftAndFade {
+	from {
+		opacity: 0;
+		transform: translateX(2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}

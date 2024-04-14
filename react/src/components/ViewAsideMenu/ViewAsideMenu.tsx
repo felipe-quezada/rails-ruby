@@ -2,12 +2,11 @@ import React from 'react';
 import './ViewAsideMenu.css';
 import ReactPaginate from 'react-paginate';
 import { Earthquake } from '../../interfaces/earthquakes';
-import { AccordionFeature } from '..';
+import { AccordionFeature, PopOverControll } from '..';
 import {
 	CaretLeftIcon,
 	CaretRightIcon,
 	Cross2Icon,
-	MixerHorizontalIcon,
 } from '@radix-ui/react-icons';
 import { ActionAsideFn, ControllerEnum } from '../../interfaces';
 
@@ -40,7 +39,7 @@ export const ViewAsideMenu: React.FC<Props> = ({
 			<div className="aside-menu__header-menu">
 				<h2>Earthquake watcher</h2>
 				<div className="icons-container">
-					<MixerHorizontalIcon className="mixer-horizontal-icon" />
+					<PopOverControll action={action} perPage={perPage} />
 					<Cross2Icon
 						className="cross-icon"
 						onClick={() => action(ControllerEnum.SHOW_ASIDE)}

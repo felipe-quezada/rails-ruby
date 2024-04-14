@@ -72,7 +72,9 @@ export const App: React.FC = () => {
 				<>
 					<button
 						className="menu-button"
-						onClick={() => setShowAside(!showAside)}
+						onClick={() => {
+							setShowAside(!showAside);
+						}}
 					>
 						<HamburgerMenuIcon />
 					</button>

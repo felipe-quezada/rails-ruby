@@ -44,14 +44,14 @@ export const AccordionFeature: React.FC<Props> = ({ items, action }) => {
 								} ${item.attribute.mag_type.toUpperCase()}`}
 							</p>
 							<p>
-								<strong>Place:</strong> {item.attribute.place}
-							</p>
-							<p>
 								<strong>Tsunami:</strong>
 								{item.attribute.tsunami ? ' risk' : ' no risk'}
 							</p>
 							<p>
 								<strong>Time:</strong> {date}
+							</p>
+							<p>
+								<strong>Place:</strong> {item.attribute.place}
 							</p>
 							<div className="buttons-container">
 								<button className="button-comments" onClick={onAction}>

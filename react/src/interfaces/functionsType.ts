@@ -18,5 +18,5 @@ export enum ActionAsideFnPayload {
 
 export type ActionAsideFn = (
 	controller: ControllerEnum,
-	payload?: number | ActionAsideFnPayload
+	payload?: number | ActionAsideFnPayload | string
 ) => void;
