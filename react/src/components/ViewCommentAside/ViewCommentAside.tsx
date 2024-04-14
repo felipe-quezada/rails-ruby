@@ -6,7 +6,8 @@ import {
 	ControllerEnum,
 	Feature,
 } from '../../interfaces';
-import { getComments } from '../../services';
+import { getComments, postComment } from '../../services';
+import { ArrowLeftIcon, Cross2Icon } from '@radix-ui/react-icons';
 
 interface Props {
 	idComment: number | undefined;
@@ -36,6 +37,34 @@ export const ViewCommentAside: React.FC<Props> = ({
 				created_at: '2024-04-14T07:26:23.657Z',
 				updated_at: '2024-04-14T07:26:23.657Z',
 			},
+			{
+				id: 2,
+				content: 'This is another comment',
+				feature_id: 9991,
+				created_at: '2024-04-14T07:26:23.657Z',
+				updated_at: '2024-04-14T07:26:23.657Z',
+			},
+			{
+				id: 2,
+				content: 'This is another comment',
+				feature_id: 9991,
+				created_at: '2024-04-14T07:26:23.657Z',
+				updated_at: '2024-04-14T07:26:23.657Z',
+			},
+			{
+				id: 2,
+				content: 'This is another comment',
+				feature_id: 9991,
+				created_at: '2024-04-14T07:26:23.657Z',
+				updated_at: '2024-04-14T07:26:23.657Z',
+			},
+			{
+				id: 2,
+				content: 'This is another comment',
+				feature_id: 9991,
+				created_at: '2024-04-14T07:26:23.657Z',
+				updated_at: '2024-04-14T07:26:23.657Z',
+			},
 		],
 	});
 	const [feature, setFeature] = useState<Feature>({
@@ -53,6 +82,8 @@ export const ViewCommentAside: React.FC<Props> = ({
 		created_at: '2024-04-14T06:50:17.373Z',
 		updated_at: '2024-04-14T06:50:17.373Z',
 	});
+	const [createComment, setCreateComment] = useState<string>('');
+	const [commentSubmited, setCommentSubmited] = useState<0 | 1>(0);
 	useEffect(() => {
 		if (idComment !== undefined && import.meta.env.PROD) {
 			getComments(idComment).then(({ comments, feature }) => {
@@ -60,7 +91,7 @@ export const ViewCommentAside: React.FC<Props> = ({
 				setFeature(feature);
 			});
 		}
-	}, [idComment]);
+	}, [idComment, commentSubmited]);
 
 	return (
 		<section
@@ -68,33 +99,67 @@ export const ViewCommentAside: React.FC<Props> = ({
 				showComments ? 'show-comments' : ''
 			}`}
 		>
-			<h2>
-				Comments of <br />
-				{feature.title}
-			</h2>
-			<div>
+			<div className="header-container">
+				<h2>
+					Comments of <br />
+					{feature.title}
+				</h2>
+				<button
+					className="exit-button"
+					onClick={() => action(ControllerEnum.SHOW_COMMENTS)}
+				>
+					<Cross2Icon className="icons-button" />
+				</button>
+				<button
+					className="return-button"
+					onClick={() => {
+						action(ControllerEnum.SHOW_COMMENTS);
+						action(ControllerEnum.SHOW_ASIDE);
+					}}
+				>
+					<ArrowLeftIcon className="icons-button" />
+				</button>
+			</div>
+			<section className="display-comments-container">
 				<h5>Quantity: {comments.quantity}</h5>
-				<ul>
+				<ul className="comment-list">
 					{comments.comment.map((comment) => {
 						return (
 							<li>
-								<strong>{comment.content}</strong>
-								<br />
-								<p>{comment.created_at.replace('T', ' ').replace('Z', '')}</p>
+								<small className="date-comment">
+									{new Date(comment.created_at).toLocaleString()}
+								</small>
+								<p>{comment.content}</p>
 							</li>
 						);
 					})}
 				</ul>
-			</div>
-			<button onClick={() => action(ControllerEnum.SHOW_COMMENTS)}>exit</button>
-			<button
-				onClick={() => {
-					action(ControllerEnum.SHOW_COMMENTS);
-					action(ControllerEnum.SHOW_ASIDE);
+			</section>
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+					postComment(idComment!, createComment).then(() => {
+						setCreateComment('');
+						setCommentSubmited(commentSubmited === 0 ? 1 : 0);
+					});
 				}}
+				className="comments-form"
 			>
-				testo
-			</button>
+				<label className="comments-area-lebel" htmlFor="new-comment">
+					Create a new comment:
+				</label>
+				<textarea
+					className="comments-area"
+					id="new-comment"
+					cols={30}
+					rows={10}
+					value={createComment}
+					onChange={(e) => setCreateComment(e.target.value)}
+				></textarea>
+				<button className="submit-button" type="submit">
+					Save
+				</button>
+			</form>
 		</section>
 	);
 };

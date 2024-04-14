@@ -70,7 +70,7 @@ export const App: React.FC = () => {
 		<>
 			{marks.length == 0 ? (
 				<div className="loading-screen">
-					<h1>cargando</h1>
+					<h1>Loading</h1>
 				</div>
 			) : (
 				<>

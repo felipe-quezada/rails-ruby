@@ -22,3 +22,85 @@
 		left: 20px;
 	}
 }
+
+.display-comments-container {
+	width: 100%;
+	height: 40%;
+	overflow-y: auto;
+	text-align: start;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.header-container {
+	color: #005ea2;
+	position: relative;
+	width: 100%;
+	text-align: center;
+}
+
+.icons-button {
+	width: 100%;
+	height: 100%;
+}
+
+.exit-button {
+	width: 20px;
+	aspect-ratio: 1;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.return-button {
+	width: 20px;
+	aspect-ratio: 1;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.comments-form {
+	width: 100%;
+	height: 30%;
+}
+
+.comments-area-lebel {
+	font-weight: 600;
+	color: #4f4f4f;
+}
+
+.comments-area {
+	width: 100%;
+	height: 60%;
+	resize: none;
+	padding: 5px 10px;
+	border-radius: 10px;
+}
+.comment-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.date-comment {
+	color: #4f4f4f;
+	display: block;
+	font-size: 12px;
+}
+
+.submit-button {
+	width: 30%;
+	background-color: #005ea2;
+	color: #f2f2f2;
+	padding: 5px 10px;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: all 0.1s ease;
+	&:hover {
+		background-color: #0478ca;
+	}
+	&:active {
+		background-color: #033f69;
+	}
+}

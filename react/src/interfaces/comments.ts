@@ -33,3 +33,11 @@ export interface Feature {
 	created_at: string;
 	updated_at: string;
 }
+
+export interface PostComment {
+	id: number;
+	content: string;
+	feature_id: number;
+	created_at: Date;
+	updated_at: Date;
+}
