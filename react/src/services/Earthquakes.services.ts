@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Earthquakes } from '../interfaces/earthquakes';
+import { Earthquakes, GetComments } from '../interfaces';
 
 axios.defaults.baseURL = import.meta.env.PROD
 	? 'https://earthquake-hm70.onrender.com/'
@@ -17,4 +17,10 @@ export const getEarthcuakesPage = async (
 	);
 
 	return data as Earthquakes;
+};
+
+export const getComments = async (id: number): Promise<GetComments> => {
+	const { data } = await axios.get(`api/features/${id}}/comments`);
+
+	return data as GetComments;
 };

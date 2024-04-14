@@ -4,6 +4,7 @@ export enum ControllerEnum {
 	MAG_TYPE = 'magType',
 	SHOW_ASIDE = 'showAside',
 	SHOW_COMMENTS = 'showComments',
+	ID_COMMENT = 'idComment',
 }
 export enum ActionAsideFnPayload {
 	MD = 'md',

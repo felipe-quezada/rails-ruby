@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapView, ViewAsideMenu } from './components';
+import { MapView, ViewAsideMenu, ViewCommentAside } from './components';
 import { getEarthcuakesPage } from './services';
 import {
 	ControllerEnum,
@@ -18,6 +18,7 @@ export const App: React.FC = () => {
 	const [marks, setMarks] = useState<Earthquake[]>([]);
 	const [page, setPage] = useState<number>(1);
 	const [perPage, setPerPage] = useState<number>(20);
+	const [idComment, setIdComment] = useState<number | undefined>(undefined);
 	const [magType, setMagType] = useState<ActionAsideFnPayload | undefined>(
 		undefined
 	);
@@ -41,6 +42,9 @@ export const App: React.FC = () => {
 				break;
 			case ControllerEnum.SHOW_COMMENTS:
 				setShowComment(!showComments);
+				break;
+			case ControllerEnum.ID_COMMENT:
+				setIdComment(payload as number);
 				break;
 			default:
 				throw new Error();
@@ -84,6 +88,11 @@ export const App: React.FC = () => {
 						page={page}
 						perPage={perPage}
 						totalPage={numberPages}
+						action={handleActionAside}
+					/>
+					<ViewCommentAside
+						idComment={idComment}
+						showComments={showComments}
 						action={handleActionAside}
 					/>
 					<MapView marks={marks} />

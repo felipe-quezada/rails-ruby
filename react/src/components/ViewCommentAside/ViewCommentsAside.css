@@ -1,0 +1,24 @@
+.aside-comments__container {
+	width: 475px;
+	height: 95%;
+	left: -500px;
+	top: 50%;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	transform: translate(0, -50%);
+	transition: all 0.5s ease;
+	color: #000000;
+	background-color: #ffffff;
+	box-shadow: inset 10px black;
+	border-radius: 15px;
+	text-align: center;
+	position: absolute;
+	z-index: 1000;
+
+	&.show-comments {
+		left: 20px;
+	}
+}

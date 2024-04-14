@@ -54,7 +54,10 @@ export const AccordionFeature: React.FC<Props> = ({ items, action }) => {
 								<strong>Place:</strong> {item.attribute.place}
 							</p>
 							<div className="buttons-container">
-								<button className="button-comments" onClick={onAction}>
+								<button className="button-comments" onClick={() => {
+									onAction()
+									action(ControllerEnum.ID_COMMENT, item.id)
+									}}>
 									Show Comments
 								</button>
 								<a className="button-links" href={item.links.external_url}>
