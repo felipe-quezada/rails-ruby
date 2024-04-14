@@ -3,29 +3,50 @@ import './ViewAsideMenu.css';
 import ReactPaginate from 'react-paginate';
 import { Earthquake } from '../../interfaces/earthquakes';
 import { AccordionFeature } from '..';
+import {
+	CaretLeftIcon,
+	CaretRightIcon,
+	Cross2Icon,
+	MixerHorizontalIcon,
+} from '@radix-ui/react-icons';
+import { ActionAsideFn, ControllerEnum } from '../../interfaces';
 
-type Action<T> = React.Dispatch<React.SetStateAction<T>>;
+interface ShowDispley {
+	showAside: boolean;
+	showComments: boolean;
+}
 
 interface Props {
 	items: Earthquake[];
 	page: number;
 	perPage: number;
 	totalPage: number;
-	actionPage: Action<number>;
-	actionPerPage: Action<number>;
+	show: ShowDispley;
+	action: ActionAsideFn;
 }
 
 export const ViewAsideMenu: React.FC<Props> = ({
 	items,
+	show,
 	page,
 	perPage,
 	totalPage,
-	actionPage,
-	actionPerPage,
+	action,
 }) => {
 	return (
-		<main className="aside-menu__container">
-			<h3>Earthquake watcher</h3>
+		<main
+			className={`aside-menu__container ${show.showAside ? 'show-aside' : ''}`}
+		>
+			<div className="aside-menu__header-menu">
+				<h2>Earthquake watcher</h2>
+				<div className="icons-container">
+					<MixerHorizontalIcon className="mixer-horizontal-icon" />
+					<Cross2Icon
+						className="cross-icon"
+						onClick={() => action(ControllerEnum.SHOW_ASIDE)}
+					/>
+				</div>
+			</div>
 			{/* TODO: aun no programadas */}
 			<p style={{ display: 'none' }}>
 				{page}
@@ -33,23 +54,31 @@ export const ViewAsideMenu: React.FC<Props> = ({
 			</p>
 			<button
 				style={{ display: 'none' }}
-				onClick={() => actionPerPage(2)}
+				onClick={() => action(ControllerEnum.PER_PAGE, 2)}
 			></button>
 			{/* ------------------------ */}
 			<section className="aside-menu__display-features">
-				<AccordionFeature items={items} />
+				<AccordionFeature items={items} action={action} />
 			</section>
 			<ReactPaginate
 				containerClassName="pagination"
 				activeClassName="active-page"
 				pageClassName="page-item"
 				breakLabel="..."
-				nextLabel={<button className="pagination-button"> {' > '} </button>}
-				onPageChange={(e) => actionPage(e.selected + 1)}
+				nextLabel={
+					<button className="pagination-button">
+						<CaretRightIcon />
+					</button>
+				}
+				onPageChange={(e) => action(ControllerEnum.PAGE, e.selected + 1)}
 				pageRangeDisplayed={3}
 				marginPagesDisplayed={2}
 				pageCount={totalPage}
-				previousLabel={<button className="pagination-button"> {' < '} </button>}
+				previousLabel={
+					<button className="pagination-button">
+						<CaretLeftIcon />
+					</button>
+				}
 			/>
 		</main>
 	);

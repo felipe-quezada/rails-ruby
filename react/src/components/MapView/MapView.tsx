@@ -16,7 +16,10 @@ export const MapView: React.FC<Props> = ({ marks }) => {
 	return (
 		<>
 			<MapContainer
-				center={[0, 0]}
+				center={[
+					marks[0].attribute.coordinates.latitude,
+					marks[0].attribute.coordinates.longitude,
+				]}
 				zoom={3}
 				minZoom={2}
 				zoomAnimation
@@ -30,7 +33,6 @@ export const MapView: React.FC<Props> = ({ marks }) => {
 				/>
 				<MarkerClusterGroup chunkedLoading>
 					{points.map((mark) => {
-						console.log(mark.attribute.title);
 						return (
 							<Marker
 								key={mark.id}

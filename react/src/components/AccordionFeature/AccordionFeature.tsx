@@ -1,31 +1,76 @@
 import React, { forwardRef } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import classNames from 'classnames';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { ChevronDownIcon, ArrowRightIcon } from '@radix-ui/react-icons';
 import './AccordionFeature.css';
 import { Earthquake } from '../../interfaces/earthquakes';
+import { ActionAsideFn, ControllerEnum } from '../../interfaces';
 
 interface Props {
 	items: Earthquake[];
+	action: ActionAsideFn;
 }
 
-export const AccordionFeature: React.FC<Props> = ({ items }) => (
-	<Accordion.Root
-		className="AccordionRoot"
-		type="single"
-		defaultValue="item-1"
-		collapsible
-	>
-		{items.map((item, i) => {
-			return (
-				<Accordion.Item className="AccordionItem" value={`item-${i + 1}`}>
-					<AccordionTrigger>{item.attribute.title}</AccordionTrigger>
-					<AccordionContent>{item.attribute.place}</AccordionContent>
-				</Accordion.Item>
-			);
-		})}
-	</Accordion.Root>
-);
+export const AccordionFeature: React.FC<Props> = ({ items, action }) => {
+	const onAction = () => {
+		action(ControllerEnum.SHOW_ASIDE);
+		action(ControllerEnum.SHOW_COMMENTS);
+	};
+
+	return (
+		<Accordion.Root
+			className="AccordionRoot"
+			type="single"
+			defaultValue="item-1"
+			collapsible
+		>
+			{items.map((item, i) => {
+				const date = new Date(+item.attribute.time).toLocaleString();
+				return (
+					<Accordion.Item
+						key={item.id}
+						className="AccordionItem"
+						value={`item-${i + 1}`}
+					>
+						<AccordionTrigger>{item.attribute.title}</AccordionTrigger>
+						<AccordionContent>
+							<p>
+								<strong>Type:</strong> {item.type}
+							</p>
+							<p>
+								<strong>Magnitude:</strong>
+								{` ${
+									item.attribute.magnitude
+								} ${item.attribute.mag_type.toUpperCase()}`}
+							</p>
+							<p>
+								<strong>Place:</strong> {item.attribute.place}
+							</p>
+							<p>
+								<strong>Tsunami:</strong>
+								{item.attribute.tsunami ? ' risk' : ' no risk'}
+							</p>
+							<p>
+								<strong>Time:</strong> {date}
+							</p>
+							<div className="buttons-container">
+								<button className="button-comments" onClick={onAction}>
+									Show Comments
+								</button>
+								<a className="button-links" href={item.links.external_url}>
+									<button>
+										More information{' '}
+										<ArrowRightIcon className="arrow-right-icon" />
+									</button>
+								</a>
+							</div>
+						</AccordionContent>
+					</Accordion.Item>
+				);
+			})}
+		</Accordion.Root>
+	);
+};
 
 const AccordionTrigger = forwardRef<
 	HTMLButtonElement,
