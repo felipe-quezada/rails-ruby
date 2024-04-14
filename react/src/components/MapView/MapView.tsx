@@ -5,7 +5,6 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { Earthquake } from '../../interfaces/earthquakes';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import { LatLngTuple } from 'leaflet';
 
 interface Props {
 	marks: Earthquake[];
@@ -13,18 +12,11 @@ interface Props {
 
 export const MapView: React.FC<Props> = ({ marks }) => {
 	const points = marks;
-	const center: LatLngTuple =
-		marks.length === 0
-			? [-20, -60]
-			: [
-					marks[0].attribute.coordinates.latitude,
-					marks[0].attribute.coordinates.longitude,
-			  ];
 
 	return (
 		<>
 			<MapContainer
-				center={center}
+				center={[-20, -60]}
 				zoom={3}
 				minZoom={2}
 				zoomAnimation
