@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Earthquakes, GetComments, PostComment } from '../interfaces';
 
 axios.defaults.baseURL = import.meta.env.PROD
-	? 'https://earthquake-hm70.onrender.com/'
+	? 'https://earthquake-8py9.onrender.com/'
 	: 'http://localhost:3000';
 
 export const getEarthcuakesPage = async (

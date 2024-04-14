@@ -68,6 +68,7 @@ export const App: React.FC = () => {
 			const { data: earth, pagination } = data as unknown as Earthquakes;
 			setMarks(earth);
 			setNumberPages(pagination.total);
+			setLoadPage(false);
 		}
 	}, [page, perPage, magType]);
 
